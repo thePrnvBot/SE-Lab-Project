@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate } from "react-router-dom";
 
 const Todo = ({text, todo, todos, setTodos}) => {
 
@@ -19,6 +20,12 @@ const Todo = ({text, todo, todos, setTodos}) => {
         );
     };
 
+    const navigate = useNavigate();
+
+    const focusOnTask = () => {
+        navigate("/focus");
+    };
+
     return(
         <div className="todo">
             <li className={`todo-item ${todo.completed ? "completed" : ''}`}>{text}</li>
@@ -27,6 +34,9 @@ const Todo = ({text, todo, todos, setTodos}) => {
             </button>
             <button onClick={deleteHandler} className="trash-btn">
                 <i className="fas fa-trash"></i>
+            </button>
+            <button onClick={focusOnTask} className="focus-btn">
+                <i className="fa-solid fa-bullseye"></i>
             </button>
         </div>
     );
