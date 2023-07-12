@@ -1,27 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../App.css';
+import Timer from '../components/Timer';
+import Settings from '../components/Settings';
+import SettingsContext from '../components/SettingsContext';
 
 const Focus = () => {
-  const [timer, setTimer] = useState(0);
 
-  // Update timer every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer(prevTimer => prevTimer + 1);
-    }, 1000);
+  const [showSettings, setShowSettings] = useState(false);
+  const [workMinutes, setWorkMinutes] = useState(45);
+  const [breakMinutes, setBreakMinutes] = useState(15);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  return (
-    <div className="focus-main">
-      <h1>Focus App</h1>
-      <p>Timer: {timer}</p>
-      <input type="text" placeholder="Enter text" />
+  return(
+    <div>
+      <SettingsContext.Provider value={{
+        showSettings,
+        workMinutes,
+        breakMinutes,
+        setShowSettings,
+        setWorkMinutes,
+        setBreakMinutes
+      }}>
+        {showSettings ? <Settings /> : <Timer />}
+      </SettingsContext.Provider>
     </div>
   );
-}
+};
 
 export default Focus;
