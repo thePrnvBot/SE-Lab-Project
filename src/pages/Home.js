@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import '../App.css';
 import Form from "../components/Form";
 import TodoList from "../components/TodoList";
+
 
 function Home() {
 
@@ -9,6 +10,8 @@ function Home() {
   const [todos, setTodos] = useState([]);
   const [status,setStatus] = useState('all');
   const [filteredTodos, setFilteredTodos] = useState([]);
+
+  console.log(todos);
 
   useEffect(() => {
     filterHandler();
@@ -31,9 +34,10 @@ function Home() {
   };
 
   return (
-    <div className="App">
+
+      <div className="App">
       <header>
-        <h1>Hello React!</h1>
+        <h1>Follow Thru</h1>
       </header>
       <Form 
       inputText = {inputText}
@@ -46,6 +50,8 @@ function Home() {
       setTodos={setTodos}
       todos={todos}/>
     </div>
+
+    
   );
 }
 

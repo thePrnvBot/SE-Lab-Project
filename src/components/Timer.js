@@ -10,6 +10,7 @@ const red = '#f54e4e'
 const green = '#aef359';
 
 const Timer = () => {
+    // const {setTimer}=useContext(TimerContext);
 
     const settingsInfo = useContext(SettingsContext);
 
@@ -51,6 +52,10 @@ const Timer = () => {
             }
 
             if (secondsLeftRef.current === 0) {
+                setIsPaused(true);
+                isPausedRef.current = true;
+                secondsLeftRef.current=0;
+
                 return switchMode();
             }
 
@@ -65,8 +70,14 @@ const Timer = () => {
     : settingsInfo.breakMinutes * 60;
     const percentage = Math.round(secondsLeft / totalSeconds * 100);
 
-    const minutes = Math.floor(secondsLeft / 60);
+    let minutes = Math.floor(secondsLeft / 60);
+    if(minutes<0){
+        minutes=0;
+    }
     let seconds = secondsLeft % 60;
+    if(seconds<0){
+        seconds=0;
+    }
     if (seconds < 10) seconds = '0' + seconds;
 
     return(
