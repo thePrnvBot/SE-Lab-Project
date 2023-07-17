@@ -1,18 +1,23 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef} from "react";
 import '../App.css';
 import {CircularProgressbar, buildStyles} from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import SettingsContext from "./SettingsContext";
 import PlayButton from "./PlayButton";
 import PauseButton from "./PauseButton";
+import TimerContext from "./TimerContext";
+import emailjs from '@emailjs/browser';
+import {useNavigate } from "react-router-dom";
+import BackButton from "./BackButton";
 
 const red = '#f54e4e'
 const green = '#aef359';
 
-const Timer = () => {
-    // const {setTimer}=useContext(TimerContext);
+
+const Timer = ({}) => {
 
     const settingsInfo = useContext(SettingsContext);
+    const {emitTimerComplete} = useContext(TimerContext); 
 
     const [isPaused, setIsPaused] = useState(true);
     const [mode, setMode] = useState('work');
@@ -21,6 +26,30 @@ const Timer = () => {
     const secondsLeftRef = useRef(secondsLeft);
     const isPausedRef = useRef(isPaused);
     const modeRef = useRef(mode);
+    const [isEmailSent, setIsEmailSent] = useState(false);
+
+    const navigate = useNavigate();
+
+    const backToHome = () => {
+        navigate("/main");
+    };
+
+    const sendEmail = () => {
+        const templateParams = {
+          to_name: 'Recipient Name', // Replace with the recipient's name
+          from_name: 'Your Name', // Replace with your name
+          message: 'Your User has completed the following tasks' // Replace with the email content
+        };
+    
+        emailjs.send('<YOUR_SERVICE_ID>', '<YOUR_TEMPLATE_ID>', templateParams, '<YOUR_USER_ID>')
+          .then((response) => {
+            console.log('Email sent successfully!', response.status, response.text);
+            setIsEmailSent(true);
+        })
+          .catch((error) => {
+            console.error('Email sending failed!', error);
+        });
+    };
 
     const tick = () => {
         secondsLeftRef.current--; 
@@ -56,6 +85,10 @@ const Timer = () => {
                 isPausedRef.current = true;
                 secondsLeftRef.current=0;
 
+                if (modeRef.current === 'work') {
+                    emitTimerComplete();
+                }
+
                 return switchMode();
             }
 
@@ -63,7 +96,7 @@ const Timer = () => {
         }, 1000);
 
         return () => clearInterval(interval);    
-    }, [settingsInfo]);
+    }, [settingsInfo, emitTimerComplete]);
 
     const totalSeconds = mode === 'work' 
     ? settingsInfo.workMinutes * 60 
@@ -105,6 +138,7 @@ const Timer = () => {
                 Settings
                 </button>
             </div>
+            <BackButton style={{marginTop:'10px'}} onClick={backToHome}/>
         </div>
     );
 }

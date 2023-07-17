@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import '../App.css';
 import Timer from '../components/Timer';
 import Settings from '../components/Settings';
 import SettingsContext from '../components/SettingsContext';
+import TimerContext, { TimerProvider } from '../components/TimerContext';
 const Focus = () => {
 
   const [showSettings, setShowSettings] = useState(false);
@@ -20,7 +21,9 @@ const Focus = () => {
         setWorkMinutes,
         setBreakMinutes
       }}>
-        {showSettings ? <Settings /> : <Timer />}
+        <TimerProvider>
+          {showSettings ? <Settings /> : <Timer />}
+        </TimerProvider>
       </SettingsContext.Provider>
     </div>
  
