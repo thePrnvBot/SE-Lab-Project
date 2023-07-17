@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import '../App.css';
 import Form from "../components/Form";
 import TodoList from "../components/TodoList";
+import { TodosContext } from "../components/TodosContext";
 
 
 function Home() {
 
   const [inputText, setInputText] = useState("");
-  const [todos, setTodos] = useState([]);
+  //const [todos, setTodos] = useState([]);
+  const { todos, setTodos } = useContext(TodosContext);
   const [status,setStatus] = useState('all');
   const [filteredTodos, setFilteredTodos] = useState([]);
 
