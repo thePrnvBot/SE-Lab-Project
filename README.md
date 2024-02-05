@@ -1,2 +1,2 @@
-## FollowThru
-# A User Accountable Productivity App
+# FollowThru
+## A User Accountable Productivity App
